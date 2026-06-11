@@ -137,6 +137,18 @@ body {
   background: var(--color-primary-pale);
 }
 
+/* 録音中の見た目（app.js が is-listening を付け外しする） */
+.mic-button.is-listening {
+  border-color: var(--color-primary);
+  background: var(--color-primary-pale);
+  animation: listening-pulse 1s ease-in-out infinite;
+}
+
+@keyframes listening-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(26, 138, 94, 0.35); }
+  50%      { box-shadow: 0 0 0 6px rgba(26, 138, 94, 0); }
+}
+
 /* ---- タップ式チップ ---- */
 .chip-group {
   display: flex;
@@ -184,6 +196,12 @@ body {
 .cta-button:active {
   background: var(--color-primary-dark);
   transform: scale(0.98);
+}
+
+/* 「考え中…」のあいだは押せない見た目に */
+.cta-button:disabled {
+  opacity: 0.65;
+  cursor: wait;
 }
 
 /* ---- 結果表示エリア ---- */

@@ -22,7 +22,7 @@
       <div class="ingredient-row">
         <input type="text" id="ingredients" class="text-input"
                placeholder="例：豚こま、キャベツ、卵">
-        <button type="button" class="mic-button" aria-label="音声で入力">🎤</button>
+        <button type="button" class="mic-button" id="mic-button" aria-label="音声で入力">🎤</button>
       </div>
     </section>
 
@@ -46,7 +46,7 @@
         <button type="button" class="chip">ガッツリ</button>
         <button type="button" class="chip">さっぱり</button>
         <button type="button" class="chip">ヘルシー</button>
-        <button type="button" class="chip is-selected">疲れた</button>
+        <button type="button" class="chip">疲れた</button>
         <button type="button" class="chip">おしゃれしたい</button>
       </div>
     </section>
@@ -71,163 +71,8 @@
     <!-- 提案ボタン -->
     <button type="button" class="cta-button" id="suggest-button">献立を提案する</button>
 
-    <!-- 結果表示エリア（いまはダミーの見本） -->
-    <section class="result" id="result">
-      <p class="mock-note">※ 以下はデザイン確認用の見本です（Step 2 で本物の提案に置き換わります）</p>
-
-      <div class="ai-message">
-        <span class="ai-avatar">🧑‍🍳</span>
-        <p>今日も一日おつかれさま。疲れた日はね、フライパンひとつでいけるやつにしよ。</p>
-      </div>
-
-      <article class="dish-card">
-        <span class="dish-label dish-label--main">主菜</span>
-        <h3 class="dish-name">豚こまとキャベツのうま塩炒め</h3>
-        <p class="dish-desc">豚バラがなくても豚こまでOK。にんにく塩だれで間違いないやつ。</p>
-        <p class="dish-ingredients">使う食材：豚こま・キャベツ・にんにく</p>
-        <details class="recipe" open>
-          <summary>つくりかたを見る</summary>
-          <div class="recipe-body">
-            <h4>材料（2人分）</h4>
-            <ul>
-              <li>豚こま肉 … 200g</li>
-              <li>キャベツ … 1/4玉</li>
-              <li>にんにく … 1かけ</li>
-              <li>ごま油 … 大さじ1</li>
-              <li>鶏ガラスープの素 … 小さじ1</li>
-              <li>塩こしょう … 少々</li>
-            </ul>
-            <h4>手順</h4>
-            <ol>
-              <li>キャベツはざく切り、にんにくはみじん切りにする</li>
-              <li>フライパンにごま油とにんにくを熱し、豚こまを炒める</li>
-              <li>肉の色が変わったらキャベツを加えて強火でさっと炒める</li>
-              <li>鶏ガラスープの素と塩こしょうで味をととのえて完成</li>
-            </ol>
-          </div>
-        </details>
-        <div class="dish-links">
-          <a href="https://www.kurashiru.com/search?query=%E8%B1%9A%E3%81%93%E3%81%BE%E3%82%AD%E3%83%A3%E3%83%99%E3%83%84%20%E5%A1%A9%E7%82%92%E3%82%81" target="_blank" rel="noopener">クラシルで検索</a>
-          <a href="https://www.youtube.com/results?search_query=%E8%B1%9A%E3%81%93%E3%81%BE%E3%82%AD%E3%83%A3%E3%83%99%E3%83%84%20%E5%A1%A9%E7%82%92%E3%82%81" target="_blank" rel="noopener">YouTubeで検索</a>
-        </div>
-      </article>
-
-      <article class="dish-card">
-        <span class="dish-label">副菜1</span>
-        <h3 class="dish-name">にんじんとツナの無限サラダ</h3>
-        <p class="dish-desc">レンジ2分。あえるだけで一品増える優秀なやつ。</p>
-        <p class="dish-ingredients">使う食材：にんじん・ツナ缶</p>
-        <details class="recipe">
-          <summary>つくりかたを見る</summary>
-          <div class="recipe-body">
-            <h4>材料（2人分）</h4>
-            <ul>
-              <li>にんじん … 1本</li>
-              <li>ツナ缶 … 1缶</li>
-              <li>ごま油 … 小さじ2</li>
-              <li>鶏ガラスープの素 … 小さじ1/2</li>
-              <li>白ごま … 適量</li>
-            </ul>
-            <h4>手順</h4>
-            <ol>
-              <li>にんじんを細切りにして耐熱ボウルに入れる</li>
-              <li>ふんわりラップをして電子レンジ（600W）で2分加熱</li>
-              <li>油を切ったツナと調味料を混ぜ、白ごまをふって完成</li>
-            </ol>
-          </div>
-        </details>
-        <div class="dish-links">
-          <a href="https://www.kurashiru.com/search?query=%E3%81%AB%E3%82%93%E3%81%98%E3%82%93%20%E3%83%84%E3%83%8A%20%E3%82%B5%E3%83%A9%E3%83%80" target="_blank" rel="noopener">クラシルで検索</a>
-          <a href="https://www.youtube.com/results?search_query=%E3%81%AB%E3%82%93%E3%81%98%E3%82%93%20%E3%83%84%E3%83%8A%20%E3%82%B5%E3%83%A9%E3%83%80" target="_blank" rel="noopener">YouTubeで検索</a>
-        </div>
-      </article>
-
-      <article class="dish-card">
-        <span class="dish-label">副菜2</span>
-        <h3 class="dish-name">やみつき塩だれきゅうり</h3>
-        <p class="dish-desc">たたいて和えるだけ。火を使わないからゼロ労力。</p>
-        <p class="dish-ingredients">使う食材：きゅうり・ごま油・塩昆布</p>
-        <details class="recipe">
-          <summary>つくりかたを見る</summary>
-          <div class="recipe-body">
-            <h4>材料（2人分）</h4>
-            <ul>
-              <li>きゅうり … 2本</li>
-              <li>塩昆布 … ひとつまみ</li>
-              <li>ごま油 … 小さじ2</li>
-              <li>塩 … 少々</li>
-            </ul>
-            <h4>手順</h4>
-            <ol>
-              <li>きゅうりをめん棒などでたたき、食べやすい大きさに割る</li>
-              <li>ポリ袋に材料をすべて入れて振り混ぜる</li>
-              <li>5分ほどなじませて完成</li>
-            </ol>
-          </div>
-        </details>
-        <div class="dish-links">
-          <a href="https://www.kurashiru.com/search?query=%E5%A1%A9%E3%81%A0%E3%82%8C%E3%81%8D%E3%82%85%E3%81%86%E3%82%8A" target="_blank" rel="noopener">クラシルで検索</a>
-          <a href="https://www.youtube.com/results?search_query=%E5%A1%A9%E3%81%A0%E3%82%8C%E3%81%8D%E3%82%85%E3%81%86%E3%82%8A" target="_blank" rel="noopener">YouTubeで検索</a>
-        </div>
-      </article>
-
-      <article class="dish-card">
-        <span class="dish-label">汁物</span>
-        <h3 class="dish-name">キャベツと卵のふわたまスープ</h3>
-        <p class="dish-desc">余ったキャベツはスープへ。卵でやさしい味に。</p>
-        <p class="dish-ingredients">使う食材：キャベツ・卵・鶏ガラスープの素</p>
-        <details class="recipe">
-          <summary>つくりかたを見る</summary>
-          <div class="recipe-body">
-            <h4>材料（2人分）</h4>
-            <ul>
-              <li>キャベツ … 2枚</li>
-              <li>卵 … 1個</li>
-              <li>水 … 400ml</li>
-              <li>鶏ガラスープの素 … 大さじ1/2</li>
-              <li>塩こしょう … 少々</li>
-            </ul>
-            <h4>手順</h4>
-            <ol>
-              <li>鍋に水と鶏ガラスープの素を入れて沸かす</li>
-              <li>ざく切りにしたキャベツを加えて2分ほど煮る</li>
-              <li>溶き卵を回し入れ、ふんわり浮いてきたら塩こしょうでととのえる</li>
-            </ol>
-          </div>
-        </details>
-        <div class="dish-links">
-          <a href="https://www.kurashiru.com/search?query=%E3%82%AD%E3%83%A3%E3%83%99%E3%83%84%20%E5%8D%B5%20%E3%82%B9%E3%83%BC%E3%83%97" target="_blank" rel="noopener">クラシルで検索</a>
-          <a href="https://www.youtube.com/results?search_query=%E3%82%AD%E3%83%A3%E3%83%99%E3%83%84%20%E5%8D%B5%20%E3%82%B9%E3%83%BC%E3%83%97" target="_blank" rel="noopener">YouTubeで検索</a>
-        </div>
-      </article>
-
-      <article class="dish-card">
-        <span class="dish-label dish-label--dessert">デザート</span>
-        <h3 class="dish-name">はちみつレモンヨーグルト</h3>
-        <p class="dish-desc">のせるだけ。疲れた日のごほうびはこれで十分。</p>
-        <p class="dish-ingredients">使う食材：ヨーグルト・はちみつ・レモン汁</p>
-        <details class="recipe">
-          <summary>つくりかたを見る</summary>
-          <div class="recipe-body">
-            <h4>材料（2人分）</h4>
-            <ul>
-              <li>プレーンヨーグルト … 200g</li>
-              <li>はちみつ … 大さじ1</li>
-              <li>レモン汁 … 小さじ1</li>
-            </ul>
-            <h4>手順</h4>
-            <ol>
-              <li>器にヨーグルトを盛る</li>
-              <li>はちみつとレモン汁をかけて完成</li>
-            </ol>
-          </div>
-        </details>
-        <div class="dish-links">
-          <a href="https://www.kurashiru.com/search?query=%E3%81%AF%E3%81%A1%E3%81%BF%E3%81%A4%E3%83%AC%E3%83%A2%E3%83%B3%E3%83%A8%E3%83%BC%E3%82%B0%E3%83%AB%E3%83%88" target="_blank" rel="noopener">クラシルで検索</a>
-          <a href="https://www.youtube.com/results?search_query=%E3%81%AF%E3%81%A1%E3%81%BF%E3%81%A4%E3%83%AC%E3%83%A2%E3%83%B3%E3%83%A8%E3%83%BC%E3%82%B0%E3%83%AB%E3%83%88" target="_blank" rel="noopener">YouTubeで検索</a>
-        </div>
-      </article>
-    </section>
+    <!-- 結果表示エリア（提案ボタンを押すと app.js が中身を描画する） -->
+    <section class="result" id="result" hidden></section>
 
   </main>
 
@@ -235,5 +80,6 @@
     <p>Tsukurou — 今日、なにつくろう？</p>
   </footer>
 
+  <script src="app.js"></script>
 </body>
 </html>
