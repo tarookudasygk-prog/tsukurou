@@ -1,0 +1,320 @@
+/* ==========================================================
+   Tsukurou スタイルシート
+   モバイルファースト：基本はスマホ縦持ち、PC では中央寄せ
+   ========================================================== */
+
+/* ---- カラーパレット・共通設定 ---- */
+:root {
+  --color-primary: #1a8a5e;        /* メインのグリーン */
+  --color-primary-dark: #14724d;   /* 押したとき用の濃いグリーン */
+  --color-primary-pale: #e7f4ee;   /* 薄いグリーン（背景アクセント） */
+  --color-bg: #f6f7f5;             /* ページ背景（ごく薄いグレー） */
+  --color-surface: #ffffff;        /* カード背景 */
+  --color-text: #26302b;           /* 基本の文字色 */
+  --color-text-sub: #6b7570;       /* 補足テキスト */
+  --color-border: #dde2de;         /* 枠線 */
+  --radius-card: 16px;
+  --radius-chip: 999px;
+  --shadow-card: 0 1px 3px rgba(38, 48, 43, 0.06);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans",
+               "Noto Sans JP", "Yu Gothic UI", sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---- ヘッダー ---- */
+.app-header {
+  text-align: center;
+  padding: 32px 16px 20px;
+}
+
+.logo {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--color-primary);
+}
+
+.tagline {
+  margin-top: 4px;
+  font-size: 0.95rem;
+  color: var(--color-text-sub);
+}
+
+/* ---- レイアウト（スマホ幅基準、PC では中央寄せ） ---- */
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 16px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ---- 入力カード ---- */
+.card {
+  background: var(--color-surface);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 18px 16px;
+}
+
+.section-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.section-note {
+  font-size: 0.8rem;
+  color: var(--color-text-sub);
+  margin: -6px 0 10px;
+}
+
+.optional-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-text-sub);
+  background: var(--color-bg);
+  border-radius: 6px;
+  padding: 2px 8px;
+}
+
+/* ---- テキスト入力 ---- */
+.text-input {
+  width: 100%;
+  font-size: 1rem;
+  padding: 12px 14px;
+  border: 1.5px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.text-input::placeholder {
+  color: #a4ada8;
+}
+
+.text-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-pale);
+}
+
+/* 食材入力欄＋マイクボタンの横並び */
+.ingredient-row {
+  display: flex;
+  gap: 8px;
+}
+
+.mic-button {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  font-size: 1.2rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.mic-button:active {
+  background: var(--color-primary-pale);
+}
+
+/* ---- タップ式チップ ---- */
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 9px 16px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-chip);
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.chip:active {
+  transform: scale(0.96);
+}
+
+.chip.is-selected {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+/* ---- 提案ボタン ---- */
+.cta-button {
+  width: 100%;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--color-primary);
+  border: none;
+  border-radius: 14px;
+  padding: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(26, 138, 94, 0.25);
+  transition: background 0.15s, transform 0.1s;
+}
+
+.cta-button:active {
+  background: var(--color-primary-dark);
+  transform: scale(0.98);
+}
+
+/* ---- 結果表示エリア ---- */
+.result {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.mock-note {
+  font-size: 0.75rem;
+  color: var(--color-text-sub);
+  text-align: center;
+}
+
+/* AI のひとことメッセージ（吹き出し風） */
+.ai-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--color-primary-pale);
+  border-radius: var(--radius-card);
+  padding: 14px 16px;
+  font-size: 0.95rem;
+}
+
+.ai-avatar {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+/* ---- 料理カード ---- */
+.dish-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 16px;
+}
+
+.dish-label {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  background: var(--color-primary-pale);
+  border-radius: 6px;
+  padding: 2px 10px;
+  margin-bottom: 6px;
+}
+
+.dish-label--main {
+  color: #fff;
+  background: var(--color-primary);
+}
+
+.dish-label--dessert {
+  color: #8a5a1a;
+  background: #f7efe2;
+}
+
+.dish-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.dish-desc {
+  font-size: 0.88rem;
+  color: var(--color-text-sub);
+}
+
+.dish-ingredients {
+  font-size: 0.8rem;
+  color: var(--color-text-sub);
+  margin-top: 6px;
+}
+
+.dish-links {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.dish-links a {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-decoration: none;
+  border: 1.5px solid var(--color-primary);
+  border-radius: var(--radius-chip);
+  padding: 6px 14px;
+  transition: background 0.15s;
+}
+
+.dish-links a:active {
+  background: var(--color-primary-pale);
+}
+
+/* ---- フッター ---- */
+.app-footer {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--color-text-sub);
+  padding: 24px 16px 32px;
+}
+
+/* ---- PC（幅 768px 以上）での調整 ---- */
+@media (min-width: 768px) {
+  .app-header {
+    padding-top: 48px;
+  }
+
+  .logo {
+    font-size: 2rem;
+  }
+
+  /* マウス操作向けの hover 効果 */
+  .chip:hover {
+    border-color: var(--color-primary);
+  }
+
+  .chip.is-selected:hover {
+    border-color: var(--color-primary);
+  }
+
+  .cta-button:hover {
+    background: var(--color-primary-dark);
+  }
+
+  .dish-links a:hover {
+    background: var(--color-primary-pale);
+  }
+}

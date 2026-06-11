@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tsukurou｜今日、なにつくろう？</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="app-header">
+    <h1 class="logo">Tsukurou</h1>
+    <p class="tagline">今日、なにつくろう？</p>
+  </header>
+
+  <main class="container">
+
+    <!-- 食材入力 -->
+    <section class="card">
+      <h2 class="section-title">🥕 食材</h2>
+      <p class="section-note">冷蔵庫にあるもの・使いたいものを入れてね</p>
+      <div class="ingredient-row">
+        <input type="text" id="ingredients" class="text-input"
+               placeholder="例：豚こま、キャベツ、卵">
+        <button type="button" class="mic-button" aria-label="音声で入力">🎤</button>
+      </div>
+    </section>
+
+    <!-- ジャンル選択 -->
+    <section class="card">
+      <h2 class="section-title">🍽 ジャンル</h2>
+      <div class="chip-group" id="genre-chips">
+        <button type="button" class="chip">和食</button>
+        <button type="button" class="chip">洋食</button>
+        <button type="button" class="chip">中華</button>
+        <button type="button" class="chip">韓国</button>
+        <button type="button" class="chip">エスニック</button>
+        <button type="button" class="chip is-selected">なんでも</button>
+      </div>
+    </section>
+
+    <!-- 気分選択 -->
+    <section class="card">
+      <h2 class="section-title">😊 きぶん</h2>
+      <div class="chip-group" id="mood-chips">
+        <button type="button" class="chip">ガッツリ</button>
+        <button type="button" class="chip">さっぱり</button>
+        <button type="button" class="chip">ヘルシー</button>
+        <button type="button" class="chip is-selected">疲れた</button>
+        <button type="button" class="chip">おしゃれしたい</button>
+      </div>
+    </section>
+
+    <!-- 調理時間選択 -->
+    <section class="card">
+      <h2 class="section-title">⏱ 時間</h2>
+      <div class="chip-group" id="time-chips">
+        <button type="button" class="chip">10分以内</button>
+        <button type="button" class="chip is-selected">30分</button>
+        <button type="button" class="chip">じっくり</button>
+      </div>
+    </section>
+
+    <!-- 自由入力 -->
+    <section class="card">
+      <h2 class="section-title">✏️ こだわり<span class="optional-badge">任意</span></h2>
+      <input type="text" id="free-request" class="text-input"
+             placeholder="例：辛いのが食べたい、洗い物少なめで">
+    </section>
+
+    <!-- 提案ボタン -->
+    <button type="button" class="cta-button" id="suggest-button">献立を提案する</button>
+
+    <!-- 結果表示エリア（いまはダミーの見本） -->
+    <section class="result" id="result">
+      <p class="mock-note">※ 以下はデザイン確認用の見本です（Step 2 で本物の提案に置き換わります）</p>
+
+      <div class="ai-message">
+        <span class="ai-avatar">🧑‍🍳</span>
+        <p>今日も一日おつかれさま。疲れた日はね、フライパンひとつでいけるやつにしよ。</p>
+      </div>
+
+      <article class="dish-card">
+        <span class="dish-label dish-label--main">主菜</span>
+        <h3 class="dish-name">豚こまとキャベツのうま塩炒め</h3>
+        <p class="dish-desc">豚バラがなくても豚こまでOK。にんにく塩だれで間違いないやつ。</p>
+        <p class="dish-ingredients">使う食材：豚こま・キャベツ・にんにく</p>
+        <div class="dish-links">
+          <a href="https://www.kurashiru.com/search?query=%E8%B1%9A%E3%81%93%E3%81%BE%E3%82%AD%E3%83%A3%E3%83%99%E3%83%84%20%E5%A1%A9%E7%82%92%E3%82%81" target="_blank" rel="noopener">クラシルで検索</a>
+          <a href="https://www.youtube.com/results?search_query=%E8%B1%9A%E3%81%93%E3%81%BE%E3%82%AD%E3%83%A3%E3%83%99%E3%83%84%20%E5%A1%A9%E7%82%92%E3%82%81" target="_blank" rel="noopener">YouTubeで検索</a>
+        </div>
+      </article>
+
+      <article class="dish-card">
+        <span class="dish-label">副菜1</span>
+        <h3 class="dish-name">にんじんとツナの無限サラダ</h3>
+        <p class="dish-desc">レンジ2分。あえるだけで一品増える優秀なやつ。</p>
+        <p class="dish-ingredients">使う食材：にんじん・ツナ缶</p>
+        <div class="dish-links">
+          <a href="https://www.kurashiru.com/search?query=%E3%81%AB%E3%82%93%E3%81%98%E3%82%93%20%E3%83%84%E3%83%8A%20%E3%82%B5%E3%83%A9%E3%83%80" target="_blank" rel="noopener">クラシルで検索</a>
+          <a href="https://www.youtube.com/results?search_query=%E3%81%AB%E3%82%93%E3%81%98%E3%82%93%20%E3%83%84%E3%83%8A%20%E3%82%B5%E3%83%A9%E3%83%80" target="_blank" rel="noopener">YouTubeで検索</a>
+        </div>
+      </article>
+
+      <article class="dish-card">
+        <span class="dish-label">副菜2</span>
+        <h3 class="dish-name">やみつき塩だれきゅうり</h3>
+        <p class="dish-desc">たたいて和えるだけ。火を使わないからゼロ労力。</p>
+        <p class="dish-ingredients">使う食材：きゅうり・ごま油・塩昆布</p>
+        <div class="dish-links">
+          <a href="https://www.kurashiru.com/search?query=%E5%A1%A9%E3%81%A0%E3%82%8C%E3%81%8D%E3%82%85%E3%81%86%E3%82%8A" target="_blank" rel="noopener">クラシルで検索</a>
+          <a href="https://www.youtube.com/results?search_query=%E5%A1%A9%E3%81%A0%E3%82%8C%E3%81%8D%E3%82%85%E3%81%86%E3%82%8A" target="_blank" rel="noopener">YouTubeで検索</a>
+        </div>
+      </article>
+
+      <article class="dish-card">
+        <span class="dish-label">汁物</span>
+        <h3 class="dish-name">キャベツと卵のふわたまスープ</h3>
+        <p class="dish-desc">余ったキャベツはスープへ。卵でやさしい味に。</p>
+        <p class="dish-ingredients">使う食材：キャベツ・卵・鶏ガラスープの素</p>
+        <div class="dish-links">
+          <a href="https://www.kurashiru.com/search?query=%E3%82%AD%E3%83%A3%E3%83%99%E3%83%84%20%E5%8D%B5%20%E3%82%B9%E3%83%BC%E3%83%97" target="_blank" rel="noopener">クラシルで検索</a>
+          <a href="https://www.youtube.com/results?search_query=%E3%82%AD%E3%83%A3%E3%83%99%E3%83%84%20%E5%8D%B5%20%E3%82%B9%E3%83%BC%E3%83%97" target="_blank" rel="noopener">YouTubeで検索</a>
+        </div>
+      </article>
+
+      <article class="dish-card">
+        <span class="dish-label dish-label--dessert">デザート</span>
+        <h3 class="dish-name">はちみつレモンヨーグルト</h3>
+        <p class="dish-desc">のせるだけ。疲れた日のごほうびはこれで十分。</p>
+        <p class="dish-ingredients">使う食材：ヨーグルト・はちみつ・レモン汁</p>
+        <div class="dish-links">
+          <a href="https://www.kurashiru.com/search?query=%E3%81%AF%E3%81%A1%E3%81%BF%E3%81%A4%E3%83%AC%E3%83%A2%E3%83%B3%E3%83%A8%E3%83%BC%E3%82%B0%E3%83%AB%E3%83%88" target="_blank" rel="noopener">クラシルで検索</a>
+          <a href="https://www.youtube.com/results?search_query=%E3%81%AF%E3%81%A1%E3%81%BF%E3%81%A4%E3%83%AC%E3%83%A2%E3%83%B3%E3%83%A8%E3%83%BC%E3%82%B0%E3%83%AB%E3%83%88" target="_blank" rel="noopener">YouTubeで検索</a>
+        </div>
+      </article>
+    </section>
+
+  </main>
+
+  <footer class="app-footer">
+    <p>Tsukurou — 今日、なにつくろう？</p>
+  </footer>
+
+</body>
+</html>
