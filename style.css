@@ -262,6 +262,47 @@ body {
   margin-top: 6px;
 }
 
+/* レシピの折りたたみ（タップで開閉） */
+.recipe {
+  margin-top: 12px;
+  border-top: 1px solid var(--color-border);
+  padding-top: 10px;
+}
+
+.recipe summary {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.recipe summary::marker {
+  color: var(--color-primary);
+}
+
+.recipe[open] summary {
+  margin-bottom: 8px;
+}
+
+.recipe-body h4 {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 10px 0 4px;
+}
+
+.recipe-body ul,
+.recipe-body ol {
+  padding-left: 1.4em;
+  font-size: 0.86rem;
+  color: var(--color-text);
+}
+
+.recipe-body li {
+  margin-bottom: 3px;
+}
+
 .dish-links {
   display: flex;
   gap: 8px;
