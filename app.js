@@ -1,115 +1,6 @@
 // ==========================================================
 // Tsukurou ブラウザ側スクリプト
-// Step 2：タップ選択・音声入力・献立の表示（仮データ）
-// Step 3 で fetchMenu() の中身を本物の AI（api/suggest.js）に差し替える
 // ==========================================================
-
-// ---------- 仮の献立データ（Step 3 で AI の応答に置き換わる） ----------
-const DUMMY_MENU = {
-  message: "今日も一日おつかれさま。疲れた日はね、フライパンひとつでいけるやつにしよ。",
-  dishes: [
-    {
-      category: "主菜",
-      name: "豚こまとキャベツのうま塩炒め",
-      description: "豚バラがなくても豚こまでOK。にんにく塩だれで間違いないやつ。",
-      mainIngredients: ["豚こま", "キャベツ", "にんにく"],
-      recipe: {
-        servings: "2人分",
-        ingredients: [
-          "豚こま肉 … 200g",
-          "キャベツ … 1/4玉",
-          "にんにく … 1かけ",
-          "ごま油 … 大さじ1",
-          "鶏ガラスープの素 … 小さじ1",
-          "塩こしょう … 少々",
-        ],
-        steps: [
-          "キャベツはざく切り、にんにくはみじん切りにする",
-          "フライパンにごま油とにんにくを熱し、豚こまを炒める",
-          "肉の色が変わったらキャベツを加えて強火でさっと炒める",
-          "鶏ガラスープの素と塩こしょうで味をととのえて完成",
-        ],
-      },
-    },
-    {
-      category: "副菜1",
-      name: "にんじんとツナの無限サラダ",
-      description: "レンジ2分。あえるだけで一品増える優秀なやつ。",
-      mainIngredients: ["にんじん", "ツナ缶"],
-      recipe: {
-        servings: "2人分",
-        ingredients: [
-          "にんじん … 1本",
-          "ツナ缶 … 1缶",
-          "ごま油 … 小さじ2",
-          "鶏ガラスープの素 … 小さじ1/2",
-          "白ごま … 適量",
-        ],
-        steps: [
-          "にんじんを細切りにして耐熱ボウルに入れる",
-          "ふんわりラップをして電子レンジ（600W）で2分加熱",
-          "油を切ったツナと調味料を混ぜ、白ごまをふって完成",
-        ],
-      },
-    },
-    {
-      category: "副菜2",
-      name: "やみつき塩だれきゅうり",
-      description: "たたいて和えるだけ。火を使わないからゼロ労力。",
-      mainIngredients: ["きゅうり", "ごま油", "塩昆布"],
-      recipe: {
-        servings: "2人分",
-        ingredients: [
-          "きゅうり … 2本",
-          "塩昆布 … ひとつまみ",
-          "ごま油 … 小さじ2",
-          "塩 … 少々",
-        ],
-        steps: [
-          "きゅうりをめん棒などでたたき、食べやすい大きさに割る",
-          "ポリ袋に材料をすべて入れて振り混ぜる",
-          "5分ほどなじませて完成",
-        ],
-      },
-    },
-    {
-      category: "汁物",
-      name: "キャベツと卵のふわたまスープ",
-      description: "余ったキャベツはスープへ。卵でやさしい味に。",
-      mainIngredients: ["キャベツ", "卵", "鶏ガラスープの素"],
-      recipe: {
-        servings: "2人分",
-        ingredients: [
-          "キャベツ … 2枚",
-          "卵 … 1個",
-          "水 … 400ml",
-          "鶏ガラスープの素 … 大さじ1/2",
-          "塩こしょう … 少々",
-        ],
-        steps: [
-          "鍋に水と鶏ガラスープの素を入れて沸かす",
-          "ざく切りにしたキャベツを加えて2分ほど煮る",
-          "溶き卵を回し入れ、ふんわり浮いてきたら塩こしょうでととのえる",
-        ],
-      },
-    },
-    {
-      category: "デザート",
-      name: "はちみつレモンヨーグルト",
-      description: "のせるだけ。疲れた日のごほうびはこれで十分。",
-      mainIngredients: ["ヨーグルト", "はちみつ", "レモン汁"],
-      recipe: {
-        servings: "2人分",
-        ingredients: [
-          "プレーンヨーグルト … 200g",
-          "はちみつ … 大さじ1",
-          "レモン汁 … 小さじ1",
-        ],
-        steps: ["器にヨーグルトを盛る", "はちみつとレモン汁をかけて完成"],
-      },
-    },
-  ],
-};
 
 // ---------- チップ（タップ式ボタン）の選択切り替え ----------
 // 各グループ内で選べるのは1つだけ。選択中のものをもう一度タップすると解除
@@ -172,11 +63,17 @@ function collectInput() {
 }
 
 // ---------- 献立の取得 ----------
-// Step 3 ではここを fetch("/api/suggest", ...) に差し替える
 async function fetchMenu(input) {
-  console.log("AI に送る予定の入力:", input);
-  await new Promise((resolve) => setTimeout(resolve, 800)); // AI が考えている風の間
-  return DUMMY_MENU;
+  const res = await fetch("/api/suggest", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || "AI の提案に失敗しました");
+  }
+  return res.json();
 }
 
 // ---------- 「献立を提案する」ボタン ----------
@@ -254,7 +151,6 @@ function renderMenu(menu) {
   const result = document.getElementById("result");
 
   result.innerHTML = `
-    <p class="mock-note">※ いまは見本の献立です（Step 3 で本物の AI 提案になります）</p>
     <div class="ai-message">
       <span class="ai-avatar">🧑‍🍳</span>
       <p>${escapeHtml(menu.message)}</p>
