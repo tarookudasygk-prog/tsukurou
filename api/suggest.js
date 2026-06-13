@@ -66,8 +66,8 @@ export default async function handler(req, res) {
 
     if (!geminiRes.ok) {
       const errText = await geminiRes.text();
-      console.error("Gemini API error:", errText);
-      return res.status(502).json({ error: "AI の呼び出しに失敗しました", debug: errText });
+      console.error("Gemini API error:", geminiRes.status, errText);
+      return res.status(502).json({ error: "AI の呼び出しに失敗しました。少し待ってもう一度試してください" });
     }
 
     const data = await geminiRes.json();
