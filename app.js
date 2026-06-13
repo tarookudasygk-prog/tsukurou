@@ -95,7 +95,7 @@ suggestButton.addEventListener("click", async () => {
     const menu = await fetchMenu(input);
     renderMenu(menu);
   } catch (error) {
-    alert("ごめんなさい、提案に失敗しました。もう一度試してみてください。");
+    alert(`エラー: ${error.message}`);
     console.error(error);
   } finally {
     suggestButton.disabled = false;
