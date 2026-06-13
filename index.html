@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tsukurou｜今日、なにつくろう？</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="app-header">
+    <h1 class="logo">Tsukurou</h1>
+    <p class="tagline">今日、なにつくろう？</p>
+  </header>
+
+  <main class="container">
+
+    <!-- 食材入力 -->
+    <section class="card">
+      <h2 class="section-title">🥕 食材</h2>
+      <p class="section-note">冷蔵庫にあるもの・使いたいものを入れてね</p>
+      <div class="ingredient-row">
+        <input type="text" id="ingredients" class="text-input"
+               placeholder="例：豚こま、キャベツ、卵">
+        <button type="button" class="mic-button" id="mic-button" aria-label="音声で入力">🎤</button>
+      </div>
+    </section>
+
+    <!-- ジャンル選択 -->
+    <section class="card">
+      <h2 class="section-title">🍽 ジャンル</h2>
+      <div class="chip-group" id="genre-chips">
+        <button type="button" class="chip">和食</button>
+        <button type="button" class="chip">洋食</button>
+        <button type="button" class="chip">中華</button>
+        <button type="button" class="chip">韓国</button>
+        <button type="button" class="chip">エスニック</button>
+        <button type="button" class="chip is-selected">なんでも</button>
+      </div>
+    </section>
+
+    <!-- 気分選択 -->
+    <section class="card">
+      <h2 class="section-title">😊 きぶん</h2>
+      <div class="chip-group" id="mood-chips">
+        <button type="button" class="chip">ガッツリ</button>
+        <button type="button" class="chip">さっぱり</button>
+        <button type="button" class="chip">ヘルシー</button>
+        <button type="button" class="chip">疲れた</button>
+        <button type="button" class="chip">おしゃれしたい</button>
+      </div>
+    </section>
+
+    <!-- 調理時間選択 -->
+    <section class="card">
+      <h2 class="section-title">⏱ 時間</h2>
+      <div class="chip-group" id="time-chips">
+        <button type="button" class="chip">10分以内</button>
+        <button type="button" class="chip is-selected">30分</button>
+        <button type="button" class="chip">じっくり</button>
+      </div>
+    </section>
+
+    <!-- 自由入力 -->
+    <section class="card">
+      <h2 class="section-title">✏️ こだわり<span class="optional-badge">任意</span></h2>
+      <input type="text" id="free-request" class="text-input"
+             placeholder="例：辛いのが食べたい、洗い物少なめで">
+    </section>
+
+    <!-- 提案ボタン -->
+    <button type="button" class="cta-button" id="suggest-button">献立を提案する</button>
+
+    <!-- 結果表示エリア（提案ボタンを押すと app.js が中身を描画する） -->
+    <section class="result" id="result" hidden></section>
+
+  </main>
+
+  <footer class="app-footer">
+    <p>Tsukurou — 今日、なにつくろう？</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
