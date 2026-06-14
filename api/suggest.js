@@ -53,7 +53,7 @@ module.exports = async (req, res) => {
 
   try {
     const geminiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -67,7 +67,7 @@ module.exports = async (req, res) => {
     if (!geminiRes.ok) {
       const errText = await geminiRes.text();
       console.error("Gemini API error:", geminiRes.status, errText);
-      return res.status(502).json({ error: "AI の呼び出しに失敗しました。少し待ってもう一度試してください" });
+      return res.status(502).json({ error: `AI の呼び出しに失敗しました（Gemini status: ${geminiRes.status}）` });
     }
 
     const data = await geminiRes.json();
