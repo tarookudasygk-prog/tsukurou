@@ -53,13 +53,13 @@ module.exports = async (req, res) => {
 
   try {
     const geminiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { responseMimeType: "application/json" },
+          generationConfig: { temperature: 0.9 },
         }),
       }
     );
@@ -71,7 +71,9 @@ module.exports = async (req, res) => {
     }
 
     const data = await geminiRes.json();
-    const text = data.candidates[0].content.parts[0].text;
+    const raw = data.candidates[0].content.parts[0].text;
+    // コードブロック（```json ... ```）が含まれていても除去してパースする
+    const text = raw.replace(/^```(?:json)?\s*/i, "").replace(/\s*```\s*$/, "").trim();
     const menu = JSON.parse(text);
 
     return res.status(200).json(menu);
