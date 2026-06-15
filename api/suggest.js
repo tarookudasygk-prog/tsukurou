@@ -27,27 +27,17 @@ module.exports = async (req, res) => {
 1. 手持ちの食材を最大限に活用する。足りない材料は代用案を出す（例：豚バラがなければ豚こまで代用）
 2. 必ず「主菜1品・副菜2品・汁物1品・デザート1品」の5品セットで提案する
 3. 冒頭にひとこと共感メッセージを添える（友達口調・短く・例「今日疲れたよね、ラクなのいこ」）
-4. 各料理に料理名・一言説明・主な食材・材料（分量付き）・作り方を含める
+4. 各料理に「料理名・一言説明・主な食材」だけを含める（詳しいレシピ・手順は不要）
 
 【出力形式】以下のJSON形式のみで返してください（コードブロック不要）:
 {
   "message": "共感メッセージ（友達口調・ひとこと）",
   "dishes": [
-    {
-      "category": "主菜",
-      "name": "料理名",
-      "description": "一言説明",
-      "mainIngredients": ["食材1", "食材2"],
-      "recipe": {
-        "servings": "2人分",
-        "ingredients": ["食材名 … 分量"],
-        "steps": ["手順1", "手順2"]
-      }
-    },
-    { "category": "副菜1", "name": "...", "description": "...", "mainIngredients": [], "recipe": { "servings": "2人分", "ingredients": [], "steps": [] } },
-    { "category": "副菜2", "name": "...", "description": "...", "mainIngredients": [], "recipe": { "servings": "2人分", "ingredients": [], "steps": [] } },
-    { "category": "汁物",  "name": "...", "description": "...", "mainIngredients": [], "recipe": { "servings": "2人分", "ingredients": [], "steps": [] } },
-    { "category": "デザート", "name": "...", "description": "...", "mainIngredients": [], "recipe": { "servings": "2人分", "ingredients": [], "steps": [] } }
+    { "category": "主菜",    "name": "料理名", "description": "一言説明", "mainIngredients": ["食材1", "食材2"] },
+    { "category": "副菜1",   "name": "...",    "description": "...",       "mainIngredients": [] },
+    { "category": "副菜2",   "name": "...",    "description": "...",       "mainIngredients": [] },
+    { "category": "汁物",    "name": "...",    "description": "...",       "mainIngredients": [] },
+    { "category": "デザート", "name": "...",    "description": "...",       "mainIngredients": [] }
   ]
 }`;
 

@@ -321,6 +321,41 @@ body {
   margin-bottom: 3px;
 }
 
+/* レシピを見るボタン */
+.recipe-btn {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px;
+  background: var(--color-primary-pale);
+  color: var(--color-primary);
+  border: 1.5px solid var(--color-primary);
+  border-radius: var(--radius-chip);
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.recipe-btn:active {
+  background: #d0eadb;
+}
+
+.recipe-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.recipe-area {
+  margin-top: 4px;
+}
+
+.recipe-loading {
+  font-size: 0.85rem;
+  color: var(--color-text-sub);
+  padding: 8px 0;
+}
+
 .dish-links {
   display: flex;
   gap: 8px;

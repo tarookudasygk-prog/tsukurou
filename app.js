@@ -3,7 +3,6 @@
 // ==========================================================
 
 // ---------- チップ（タップ式ボタン）の選択切り替え ----------
-// 各グループ内で選べるのは1つだけ。選択中のものをもう一度タップすると解除
 document.querySelectorAll(".chip-group").forEach((group) => {
   group.addEventListener("click", (event) => {
     const chip = event.target.closest(".chip");
@@ -31,7 +30,6 @@ if (SpeechRecognition) {
 
   recognition.addEventListener("result", (event) => {
     const text = event.results[0][0].transcript;
-    // すでに入力があれば「、」でつなげて追記する
     ingredientsInput.value = ingredientsInput.value
       ? `${ingredientsInput.value}、${text}`
       : text;
@@ -40,7 +38,6 @@ if (SpeechRecognition) {
   recognition.addEventListener("end", () => micButton.classList.remove("is-listening"));
   recognition.addEventListener("error", () => micButton.classList.remove("is-listening"));
 } else {
-  // Firefox など未対応ブラウザ向けのフォールバック
   micButton.addEventListener("click", () => {
     alert("このブラウザは音声入力に対応していないみたい。手入力でお願いします🙏");
   });
@@ -62,8 +59,14 @@ function collectInput() {
   };
 }
 
-// ---------- 献立の取得 ----------
+// ---------- 状態管理 ----------
+let currentDishes = [];
+let currentIngredients = "";
+const recipeCache = new Map();
+
+// ---------- 献立の取得（Phase 1：名前・説明のみ） ----------
 async function fetchMenu(input) {
+  currentIngredients = input.ingredients;
   const res = await fetch("/api/suggest", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -72,6 +75,26 @@ async function fetchMenu(input) {
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err.error || "AI の提案に失敗しました");
+  }
+  return res.json();
+}
+
+// ---------- レシピの取得（Phase 2：1品ずつ） ----------
+async function fetchRecipe(dish) {
+  const res = await fetch("/api/recipe", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      dishName: dish.name,
+      category: dish.category,
+      description: dish.description,
+      mainIngredients: dish.mainIngredients,
+      originalIngredients: currentIngredients,
+    }),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || "レシピの取得に失敗しました");
   }
   return res.json();
 }
@@ -90,6 +113,7 @@ suggestButton.addEventListener("click", async () => {
 
   suggestButton.disabled = true;
   suggestButton.textContent = "考え中…🍳";
+  recipeCache.clear();
 
   try {
     const menu = await fetchMenu(input);
@@ -103,23 +127,47 @@ suggestButton.addEventListener("click", async () => {
   }
 });
 
+// ---------- レシピボタンのクリック（イベント委譲） ----------
+document.getElementById("result").addEventListener("click", async (e) => {
+  const btn = e.target.closest(".recipe-btn");
+  if (!btn || btn.disabled) return;
+
+  const index = parseInt(btn.dataset.index, 10);
+  const dish = currentDishes[index];
+  const card = btn.closest(".dish-card");
+  const recipeArea = card.querySelector(".recipe-area");
+
+  if (recipeCache.has(dish.name)) {
+    renderRecipe(recipeArea, recipeCache.get(dish.name), dish.name);
+    btn.hidden = true;
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "取得中…";
+  recipeArea.innerHTML = '<p class="recipe-loading">レシピを考えてるよ🍳</p>';
+
+  try {
+    const recipe = await fetchRecipe(dish);
+    recipeCache.set(dish.name, recipe);
+    renderRecipe(recipeArea, recipe, dish.name);
+    btn.hidden = true;
+  } catch (err) {
+    recipeArea.innerHTML = "";
+    btn.disabled = false;
+    btn.textContent = "このレシピを見る 🍳";
+    alert("レシピの取得に失敗しました。もう一度試してください。");
+    console.error(err);
+  }
+});
+
 // ---------- 結果の描画 ----------
-// AI の応答に変な文字列が混ざっても画面が壊れないようにエスケープする
 function escapeHtml(str) {
   return String(str)
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;");
-}
-
-function searchLinksHtml(dishName) {
-  const query = encodeURIComponent(dishName);
-  return `
-    <div class="dish-links">
-      <a href="https://www.kurashiru.com/search?query=${query}" target="_blank" rel="noopener">クラシルで検索</a>
-      <a href="https://www.youtube.com/results?search_query=${query}" target="_blank" rel="noopener">YouTubeで検索</a>
-    </div>`;
 }
 
 function dishCardHtml(dish, index) {
@@ -129,25 +177,33 @@ function dishCardHtml(dish, index) {
     : "";
 
   return `
-    <article class="dish-card">
+    <article class="dish-card" data-index="${index}">
       <span class="dish-label${labelClass}">${escapeHtml(dish.category)}</span>
       <h3 class="dish-name">${escapeHtml(dish.name)}</h3>
       <p class="dish-desc">${escapeHtml(dish.description)}</p>
       <p class="dish-ingredients">使う食材：${dish.mainIngredients.map(escapeHtml).join("・")}</p>
-      <details class="recipe"${index === 0 ? " open" : ""}>
-        <summary>つくりかたを見る</summary>
-        <div class="recipe-body">
-          <h4>材料（${escapeHtml(dish.recipe.servings)}）</h4>
-          <ul>${dish.recipe.ingredients.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
-          <h4>手順</h4>
-          <ol>${dish.recipe.steps.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}</ol>
-        </div>
-      </details>
-      ${searchLinksHtml(dish.name)}
+      <button class="recipe-btn" data-index="${index}">このレシピを見る 🍳</button>
+      <div class="recipe-area"></div>
     </article>`;
 }
 
+function renderRecipe(areaEl, recipe, dishName) {
+  const query = encodeURIComponent(dishName);
+  areaEl.innerHTML = `
+    <div class="recipe-body">
+      <h4>材料（${escapeHtml(recipe.servings)}）</h4>
+      <ul>${recipe.ingredients.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+      <h4>手順</h4>
+      <ol>${recipe.steps.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}</ol>
+    </div>
+    <div class="dish-links">
+      <a href="https://www.kurashiru.com/search?query=${query}" target="_blank" rel="noopener">クラシルで検索</a>
+      <a href="https://www.youtube.com/results?search_query=${query}" target="_blank" rel="noopener">YouTubeで検索</a>
+    </div>`;
+}
+
 function renderMenu(menu) {
+  currentDishes = menu.dishes;
   const result = document.getElementById("result");
 
   result.innerHTML = `
